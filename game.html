@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> 
+    <title>Game</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      :root {
+        font-family: "CGA", monospace;
+        font-size: 16px;
+        -moz-osx-font-smoothing: grayscale;
+        user-select: none;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto, 1fr;
+        height: 100vh;
+        place-content: center;
+        gap: 2rem;
+        cursor: grab;
+      }
+
+      body:active {
+        cursor: grabbing;
+      }
+
+      .score-container {
+        display: flex;
+        line-height: 1rem;
+      }
+
+      .score {
+        margin-inline-start: auto;
+      }
+
+      canvas {
+        --rotation: 10deg;
+        background-color: #eee;
+        border: 8px solid #000;
+        box-shadow: calc(var(--rotate-x, 0) * 10px) calc(var(--rotate-y, 0) * 10px + 10px) 20px #0001;
+        transform:
+          perspective(600px)
+          rotateY(calc(var(--rotate-x, 0) * var(--rotation)))
+          rotateX(calc(var(--rotate-y, 0) * var(--rotation) * -1));
+      }
+
+      @font-face {
+        font-family: CGA;
+        src: url("fonts/Web437_IBM_BIOS.woff");
+      }
+    </style>
+  </head>
+  <body>
+    <div class="score-container">
+      <div class="level">Level: 003</div>
+      <div class="score">Score: 0156pts</div>
+    </div>
+    <canvas id="gameCanvas" width="480" height="480"></canvas>
+  </body>
+  <script>
+
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let width;
+    let height;
+
+    let rotX = 0;
+    let rotY = 0;
+    let dragX = 0;
+    let dragY = 0;
+    let dragMouseX = 0;
+    let dragMouseY = 0;
+    let isDragging = false;
+    const playerSpeed = 1;
+    const ballRadius = 10;
+
+    setInterval(game, 1/30);
+
+    
+
+    document.body.addEventListener("mousedown", e => {
+      dragX = rotX;
+      dragY = rotY;
+      dragMouseX = convertCoordX(e.clientX) / (canvas.width / 2);
+      dragMouseY = convertCoordY(e.clientY) / (canvas.height / 2);
+      isDragging = true;
+    })
+
+    document.body.addEventListener("mouseup", e => {
+      isDragging = false;
+    })
+
+    document.body.addEventListener("mousemove", e => {
+      if (isDragging) {
+        rotX = convertCoordX(e.clientX) / (canvas.width / 2) - dragMouseX + dragX;
+        rotY = convertCoordY(e.clientY) / (canvas.height / 2) - dragMouseY + dragY;
+        if (rotX > 1) {
+          rotX = 1;
+        }
+
+        if (rotX < -1) {
+          rotX = -1;
+        }
+
+        if (rotY > 1) {
+          rotY = 1;
+        }
+
+        if (rotY < -1) {
+          rotY = -1;
+        }
+        document.body.style.setProperty('--rotate-x', rotX);
+        document.body.style.setProperty('--rotate-y', rotY);
+      }
+    })
+
+
+    function game() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateObjects();
+      checkCollisions();
+      player.drawBall();
+
+    }
+
+    function updateObjects() {
+      player.updatePosition();
+    }
+
+    function checkCollisions() {
+      if (player.x + ballRadius > canvas.width) {
+        player.x = canvas.width - ballRadius;
+      }
+
+      if (player.x - ballRadius < 0) {
+        player.x = ballRadius;
+      }
+
+      if (player.y + ballRadius > canvas.height) {
+        player.y = canvas.height - ballRadius;
+      }
+
+      if (player.y - ballRadius < 0) {
+        player.y = ballRadius;
+      }
+    }
+
+    class Ball {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.rx = 0;
+        this.ry = 0;
+      }
+
+      drawBall() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill()
+      }
+
+      updatePosition() {
+        this.x += playerSpeed * rotX;
+        this.y += playerSpeed * rotY;
+      }
+    }
+
+    // create player object
+    let player = new Ball(240, 240);
+
+
+
+
+
+
+
+
+
+
+
+    function convertCoordX(x) {
+      return x - canvas.width / 2;
+    }
+
+    function convertCoordY(y) {
+      return y - canvas.height / 2;
+    }
+
+  </script>
+</html>
