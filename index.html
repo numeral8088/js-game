@@ -85,12 +85,14 @@
     const playerSpeed = 1;
     const ballRadius = 10;
     let level = 1;
+    let levelStarted = false;
 
     const startTime = new Date();
     let currentTime;
     setInterval(game, 1/30);
 
     document.body.addEventListener("mousedown", e => {
+      levelStarted = true;
       dragX = rotX;
       dragY = rotY;
       dragMouseX = convertCoordX(e.clientX) / (canvas.width / 2);
@@ -123,7 +125,9 @@
         e.drawBall();
       }
       player.drawBall();
-      currentTime = new Date();
+      if (levelStarted) {
+        currentTime = new Date();
+      }
       timerText.textContent = formatTimer(Math.round((currentTime - startTime) / 1000));
       levelText.textContent = level;
 
