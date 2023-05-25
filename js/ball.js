@@ -24,8 +24,8 @@ class Ball {
   updatePosition() {
     this.ax = rotX * 0.1;
     this.ay = rotY * 0.1;
-    this.vx += ax;
-    this.vy += ay;
+    this.vx += this.ax;
+    this.vy += this.ay;
     this.x += this.vx;
     this.y += this.vy;
   }
