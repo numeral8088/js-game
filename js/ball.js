@@ -33,19 +33,27 @@ class Ball {
   // check collisions with canvas edges
   checkEdges() {
     if (this.x + this.radius > canvas.width) {
-      this.x = canvas.width - this.radius;
+      // this.x = canvas.width - this.radius;
+      this.ax = this.vx * -1;
+      this.ay = this.vy * -1;
     }
 
     if (this.x - this.radius < 0) {
-      this.x = this.radius;
+      // this.x = this.radius;
+      this.ax = this.vx * -1;
+      this.ay = this.vy * -1;
     }
 
     if (this.y + this.radius > canvas.height) {
-      this.y = canvas.height - this.radius;
+      // this.y = canvas.height - this.radius;
+      this.ax = this.vx * -1;
+      this.ay = this.vy * -1;
     }
 
     if (this.y - this.radius < 0) {
-      this.y = this.radius;
+      // this.y = this.radius;
+      this.ax = this.vx * -1;
+      this.ay = this.vy * -1;
     }
   }
 }
