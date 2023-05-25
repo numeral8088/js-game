@@ -31,6 +31,15 @@ class Ball {
     this.y += this.vy;
   }
 
+  // checkCollision(obj) {
+  //   if (getDistance(this.x, this.y, obj.x, obj.y) < this.radius * 2) {
+  //     this.ax = this.vx * -2;
+  //     this.ay = this.vy * -2;
+  //     obj.ax = obj.vx * -2;
+  //     obj.ay = obj.vy * -2;
+  //   }
+  // }
+
   // check collisions with canvas edges
   checkEdges() {
     if (this.x + this.radius > canvas.width) {

@@ -70,6 +70,9 @@ function game() {
   }
   player.drawBall();
 
+  // draw level lines
+  drawLevel(levelData[level - 1]);
+
   // update timer and level counter
   if (levelStarted) {
     currentTime = new Date();
@@ -94,13 +97,13 @@ function formatTimer(s) {
 }
 
 // create player object
-let player = new Ball(0, 480, "#f00");
+// let player = new Ball(0, 480, "#f00");
 // create enemy objects
-for (let i = 0; i < 5; i++) {
-  x = Math.random() * 480;
-  y = Math.random() * 480;
-  enemies[i] = new Ball(x, y, "#00f");
-}
+// for (let i = 0; i < 5; i++) {
+//   x = Math.random() * 480;
+//   y = Math.random() * 480;
+//   enemies[i] = new Ball(x, y, "#00f");
+// }
 
 // convert locations on canvas so 0,0 = center
 function convertCoordX(x) {
@@ -109,3 +112,10 @@ function convertCoordX(x) {
 function convertCoordY(y) {
   return y - canvas.height / 2;
 }
+
+// get distance from one location to another
+// function getDistance(x1, y1, x2, y2) {
+//   a = Math.abs(x1 - x2);
+//   b = Math.abs(y1 - y2);
+//   return sqrt(a^2 + b^2);
+// }
