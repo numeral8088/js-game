@@ -1,0 +1,53 @@
+/* remove padding and margins by default */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  font-family: "CGA", monospace;
+  font-size: 16px;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+body {
+  /* center elements on page */
+  display: grid;
+  grid-template-rows: auto, 1fr;
+  height: 100vh;
+  place-content: center;
+  gap: 2rem;
+  cursor: grab;
+}
+
+body:active {
+  cursor: grabbing;
+}
+
+.score-container {
+  display: flex;
+  line-height: 1rem;
+}
+
+/* align timer to right of the scoreboard */
+.timer {
+  margin-inline-start: auto;
+}
+
+canvas {
+  background-color: #eee;
+  border: 8px solid #000;
+  box-shadow: calc(var(--rotate-x, 0) * 10px) calc(var(--rotate-y, 0) * 10px + 10px) 20px #0001;
+  /* rotation multiplier */
+  --rotation: 10deg;
+  /* rotate canvas on page */
+  transform:
+    perspective(600px) rotateY(calc(var(--rotate-x, 0) * var(--rotation))) rotateX(calc(var(--rotate-y, 0) * var(--rotation) * -1));
+}
+
+/* fonts */
+@font-face {
+  font-family: CGA;
+  src: url("fonts/Web437_IBM_BIOS.woff");
+}
