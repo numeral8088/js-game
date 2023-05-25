@@ -22,8 +22,8 @@ class Ball {
 
   // update position on the canvas
   updatePosition() {
-    this.ax = rotX * 0.01 + vx * -0.005;
-    this.ay = rotY * 0.01 + vy * -0.005;
+    this.ax = rotX * 0.01 + this.vx * -0.005;
+    this.ay = rotY * 0.01 + this.vy * -0.005;
     this.checkEdges();
     this.vx += this.ax;
     this.vy += this.ay;
