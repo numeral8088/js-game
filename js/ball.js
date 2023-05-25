@@ -5,6 +5,8 @@ class Ball {
     this.y = y;
     this.vx = 0;
     this.vy = 0;
+    this.ax = 0;
+    this.ay = 0;
     this.color = color;
     this.radius = 10;
   }
@@ -20,8 +22,10 @@ class Ball {
 
   // update position on the canvas
   updatePosition() {
-    this.vx = rotX * 0.1;
-    this.vy = rotY * 0.1;
+    this.ax = rotX * 0.1;
+    this.ay = rotY * 0.1;
+    this.vx += ax;
+    this.vy += ay;
     this.x += this.vx;
     this.y += this.vy;
   }
