@@ -7,7 +7,7 @@ class Line {
   }
 
   draw() {
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 5;
     ctx.beginPath();
     ctx.moveTo(this.x1, this.y1);
     ctx.lineTo(this.x2, this.y2);
@@ -26,5 +26,6 @@ let levelData = [];
 
 // level 1
 levelData[0] = [
-  new Line(0, 240, 240, 240)
+  new Line(0, 240, 240, 240),
+  new Line(240, 240, 240, 0),
 ];
