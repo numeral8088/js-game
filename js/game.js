@@ -128,3 +128,5 @@ function levelStart() {
   //   enemies[i] = new Ball(x, y, "#00f");
   // }
 }
+
+levelStart();
