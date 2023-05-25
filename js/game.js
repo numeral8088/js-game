@@ -15,7 +15,6 @@ let dragY = 0;
 let dragMouseX = 0;
 let dragMouseY = 0;
 let isDragging = false;
-const playerSpeed = 1;
 let level = 1;
 let levelStarted = false;
 

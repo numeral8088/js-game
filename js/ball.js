@@ -3,6 +3,8 @@ class Ball {
   constructor(x, y, color) {
     this.x = x;
     this.y = y;
+    this.vx = 0;
+    this.vy = 0;
     this.color = color;
     this.radius = 10;
   }
@@ -18,8 +20,10 @@ class Ball {
 
   // update position on the canvas
   updatePosition() {
-    this.x += playerSpeed * rotX;
-    this.y += playerSpeed * rotY;
+    this.vx = rotX * 0.1;
+    this.vy = rotY * 0.1;
+    this.x += vx;
+    this.y += vy;
   }
 
   // check collisions with canvas edges
