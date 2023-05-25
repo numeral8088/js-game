@@ -12,7 +12,7 @@ class Ball {
     ctx.beginPath();
     ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
     ctx.closePath();
-    ctx.fillStyle = this.col;
+    ctx.fillStyle = this.color;
     ctx.fill()
   }
 
