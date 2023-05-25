@@ -62,13 +62,13 @@ function game() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // update game objects
-  updateObjects();
+  // updateObjects();
 
   // draw game objects
-  for (e of enemies) {
-    e.drawBall();
-  }
-  player.drawBall();
+  // for (e of enemies) {
+  //   e.drawBall();
+  // }
+  // player.drawBall();
 
   // draw level lines
   drawLevel(levelData[level - 1]);
