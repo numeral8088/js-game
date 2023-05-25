@@ -22,8 +22,8 @@ class Ball {
 
   // update position on the canvas
   updatePosition() {
-    this.ax = rotX * 0.01 - 0.005;
-    this.ay = rotY * 0.01 - 0.005;
+    this.ax = rotX * 0.01 + vx * -0.005;
+    this.ay = rotY * 0.01 + vy * -0.005;
     this.checkEdges();
     this.vx += this.ax;
     this.vy += this.ay;
@@ -35,26 +35,26 @@ class Ball {
   checkEdges() {
     if (this.x + this.radius > canvas.width) {
       // this.x = canvas.width - this.radius;
-      this.ax = this.vx * -1;
-      this.ay = this.vy * -1;
+      this.ax = this.vx * -2;
+      this.ay = this.vy * -2;
     }
 
     if (this.x - this.radius < 0) {
       // this.x = this.radius;
-      this.ax = this.vx * -1;
-      this.ay = this.vy * -1;
+      this.ax = this.vx * -2;
+      this.ay = this.vy * -2;
     }
 
     if (this.y + this.radius > canvas.height) {
       // this.y = canvas.height - this.radius;
-      this.ax = this.vx * -1;
-      this.ay = this.vy * -1;
+      this.ax = this.vx * -2;
+      this.ay = this.vy * -2;
     }
 
     if (this.y - this.radius < 0) {
       // this.y = this.radius;
-      this.ax = this.vx * -1;
-      this.ay = this.vy * -1;
+      this.ax = this.vx * -2;
+      this.ay = this.vy * -2;
     }
   }
 }
