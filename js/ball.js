@@ -22,8 +22,8 @@ class Ball {
   updatePosition() {
     this.vx = rotX * 0.1;
     this.vy = rotY * 0.1;
-    this.x += vx;
-    this.y += vy;
+    this.x += this.vx;
+    this.y += this.vy;
   }
 
   // check collisions with canvas edges
