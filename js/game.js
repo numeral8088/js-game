@@ -81,10 +81,8 @@ function game() {
 // update game objects
 function updateObjects() {
   player.updatePosition();
-  player.checkEdges();
   for (e of enemies) {
     e.updatePosition();
-    e.checkEdges();
   }
 }
 
