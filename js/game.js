@@ -27,6 +27,11 @@ function setup() {
 function draw() {
   clear();
 
+    // draw level lines
+    for (obj of levelLines) {
+      obj.draw();
+    }
+
   let gravity = p5.Vector.mult(rotation, .5);
 
   // update and draw objects
@@ -44,17 +49,13 @@ function draw() {
             obj.collideH(wall);
             break;
           case "Finish":
+            obj.collideF(wall);
             break;
         }
       }
 
       obj.update();
     }
-    obj.draw();
-  }
-  
-  // draw level lines
-  for (obj of levelLines) {
     obj.draw();
   }
 
@@ -66,8 +67,8 @@ function draw() {
   }
 }
 
-// mouse events for rotating the canvas
-document.body.addEventListener("mousedown", e => {
+// mouse movement handler functions
+const mouseDownHandler = (e) => {
   if (gameState == 0) {
     gameState = 1;
     startTime = new Date();
@@ -77,20 +78,36 @@ document.body.addEventListener("mousedown", e => {
   dragMouseX = convertCoordX(e.clientX) / (canvas.width / 2);
   dragMouseY = convertCoordY(e.clientY) / (canvas.height / 2);
   isDragging = true;
-});
+}
 
-document.body.addEventListener("mouseup", e => {
+const mouseUpHandler = (e) => {
   isDragging = false;
-});
+}
 
-document.body.addEventListener("mousemove", e => {
+const mouseMoveHandler = (e) => {
   if (isDragging) {
     rotation.x = convertCoordX(e.clientX) / (canvas.width / 2) - dragMouseX + dragX;
     rotation.y = convertCoordY(e.clientY) / (canvas.height / 2) - dragMouseY + dragY;
     rotation.limit(1);
     rotateCanvas();
   }
-});
+}
+
+// mouse events for rotating the canvas
+function setupMouseListeners() {
+  document.body.setAttribute('drag', "");
+  document.body.addEventListener("mousedown", mouseDownHandler);
+  document.body.addEventListener("mouseup", mouseUpHandler);
+  document.body.addEventListener("mousemove", mouseMoveHandler);
+}
+
+function removeMouseListeners() {
+  document.body.removeAttribute('drag');
+  isDragging = false;
+  document.body.removeEventListener("mousedown", mouseDownHandler);
+  document.body.removeEventListener("mouseup", mouseUpHandler);
+  document.body.removeEventListener("mousemove", mouseMoveHandler);
+}
 
 // format timer as MM:SS
 function formatTimer(s) {
@@ -114,9 +131,9 @@ function loadLevel(data) {
   gameState = 0;
   levelText.textContent = level;
   timerText.textContent = "00:00";
-  rotation.x = 0;
-  rotation.y = 0;
+  rotation.set(0, 0);
   rotateCanvas();
+  setupMouseListeners();
   let prevX = 0;
   let prevY = 0;
 
@@ -161,4 +178,28 @@ function loadLevel(data) {
 function rotateCanvas() {
   document.body.style.setProperty('--rotate-x', rotation.x);
   document.body.style.setProperty('--rotate-y', rotation.y);
+}
+
+const dialog = document.getElementById('levelCompleteDialog');
+const nextLevelButton = document.getElementById('nextLevelButton');
+const dialogLevelText = document.querySelector('dialog>h1>span');
+const dialogTimerText = document.querySelector('dialog>p>span');
+
+function levelFinish() {
+  removeMouseListeners();
+  gameState = 0;
+  dialogLevelText.textContent = level;
+  dialogTimerText.textContent = formatTimer(Math.round((currentTime - startTime) / 1000));
+  dialog.showModal();
+}
+
+nextLevelButton.addEventListener('click', (e) => {
+  level += 1;
+  loadLevel(levelData[level]);
+  dialog.close();
+})
+
+function gotoLevel(l) {
+  level = l;
+  loadLevel(levelData[level]);
 }

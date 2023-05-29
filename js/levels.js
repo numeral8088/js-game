@@ -37,8 +37,8 @@ class Finish {
   }
 
   draw() {
-    drawingContext.fillStyle = "red";
-    drawingContext.fillRect(this.x, this.y, this.w, this.h);
+    fill("red");
+    rect(this.x, this.y, this.w, this.h);
   }
 }
 
@@ -55,9 +55,9 @@ levelData[0] = [
   ["hline", 60, 240, 240],
   // draw a vertical line
   ["vline", 240, 240, 60],
-  // draw a horizontal line starting at previous coordinates
+  // draw a horizontal line from previous coordinates
   ["rhline", 300],
-  // draw a vertical line starting at previous coordinates
+  // draw a vertical line from previous coordinates
   ["rvline", 240],
   // level goal area
   ["finish", 440, 0, 40, 40],
@@ -81,4 +81,9 @@ levelData[1] = [
   ["player", 30, 450],
   ["enemy", 90, 90],
   ["finish", 180, 300, 60, 60],
+]
+
+// level 2  
+levelData[2] = [
+  ["player", 240, 240],
 ]

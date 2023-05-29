@@ -85,6 +85,16 @@ class Ball {
     }
   }
 
+  collideF() {
+    let xCondition = this.pos.x > wall.x && this.pos.x < wall.x + wall.w;
+    let yCondition = this.pos.y > wall.y && this.pos.y < wall.y + wall.h;
+    if (xCondition && yCondition) {
+      if (this.constructor.name == "Player") {
+        levelFinish();
+      }
+    }
+  }
+
   edges() {
     if (this.pos.y >= height - this.radius) {
       this.pos.y = height - this.radius;

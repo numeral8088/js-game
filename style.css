@@ -17,10 +17,13 @@ body {
   height: 100vh;
   place-content: center;
   gap: 2rem;
+}
+
+body[drag] {
   cursor: grab;
 }
 
-body:active {
+body[drag]:active {
   cursor: grabbing;
 }
 
@@ -49,4 +52,72 @@ canvas {
 @font-face {
   font-family: CGA;
   src: url("fonts/Web437_IBM_BIOS.woff");
+}
+
+dialog {
+  transform: translateY(5rem);
+  transition: transform 200ms;
+  display: block;
+  visibility: collapse;
+}
+
+dialog[open] {
+  margin: auto;
+  padding: 1rem;
+  width: min(90%, 40ch);
+  border: 0.25em solid currentColor;
+  transform: translateY(0);
+  visibility: visible;
+
+}
+
+dialog h1 {
+  border-bottom: .25rem solid currentColor;
+  margin-bottom: .5rem;
+}
+
+button {
+  --transition-time: 200ms;
+  position: relative;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font: inherit;
+  padding: 1em;
+  margin: 1em .5em .5em 0;
+  outline: none;
+  transition: transform var(--transition-time);
+  cursor: pointer;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #00b050;
+  z-index: -1;
+}
+
+button:focus-visible {
+  outline: 0.125em solid #00b050;
+  outline-offset: 0.125em;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #606060;
+  z-index: -2;
+  transform: translate(.5em, .5em);
+  transition: transform var(--transition-time);
+}
+
+button:active {
+  --transition-time: 50ms;
+  transform: translate(.5em, .5em);
+}
+
+button:active::after {
+  transform: translate(0, 0);
 }
