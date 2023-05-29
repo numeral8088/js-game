@@ -1,12 +1,8 @@
-// setup canvas, timer and level elements on page
-// const canvas = document.getElementById("gameCanvas");
+// setup timer and level elements on page
 const levelText = document.querySelector(".level > span");
 const timerText = document.querySelector(".timer > span");
-// setup canvas rendering context
-// const ctx = canvas.getContext("2d");
 
-let rotX = 0;
-let rotY = 0;
+let rotation;
 let dragX = 0;
 let dragY = 0;
 let dragMouseX = 0;
@@ -18,48 +14,47 @@ let gameState = 0;
 let startTime;
 let currentTime;
 
-// run game loop
-// setInterval(game, 1 / 30);
-
 let level = 1;
 let levelLines = [];
 let levelObjects = [];
 
 function setup() {
   createCanvas(480, 480);
-  parseLevel(levelData[level]);
+  rotation = createVector();
+  loadLevel(levelData[level]);
 }
 
 function draw() {
   clear();
-  // for (obj of levelData[level][0]) {
-  //   if (gameState == 1) {
-  //     obj.update();
-  //   }
-  //   obj.draw();
-  // }
-  for (obj of levelLines) {
-    obj.draw();
-  }
+
+  let gravity = p5.Vector.mult(rotation, .5);
+
+  // update and draw objects
   for (obj of levelObjects) {
-    obj.update();
-    obj.draw();
-  }
-}
-
-// game loop
-function game() {
-  // clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  for (obj of levelData[level][0]) {
     if (gameState == 1) {
+      obj.applyForce(gravity);
+      
+      for (wall of levelLines) {
+        let wallType = wall.constructor.name;
+        switch (wallType) {
+          case "VLine":
+            obj.collideV(wall);
+            break;
+          case "HLine":
+            obj.collideH(wall);
+            break;
+          case "Finish":
+            break;
+        }
+      }
+
       obj.update();
     }
     obj.draw();
   }
-
-  for (obj of levelData[level][1]) {
+  
+  // draw level lines
+  for (obj of levelLines) {
     obj.draw();
   }
 
@@ -77,8 +72,8 @@ document.body.addEventListener("mousedown", e => {
     gameState = 1;
     startTime = new Date();
   }
-  dragX = rotX;
-  dragY = rotY;
+  dragX = rotation.x;
+  dragY = rotation.y;
   dragMouseX = convertCoordX(e.clientX) / (canvas.width / 2);
   dragMouseY = convertCoordY(e.clientY) / (canvas.height / 2);
   isDragging = true;
@@ -90,16 +85,10 @@ document.body.addEventListener("mouseup", e => {
 
 document.body.addEventListener("mousemove", e => {
   if (isDragging) {
-    rotX = convertCoordX(e.clientX) / (canvas.width / 2) - dragMouseX + dragX;
-    rotY = convertCoordY(e.clientY) / (canvas.height / 2) - dragMouseY + dragY;
-    // set rotation limits
-    if (rotX > 1) { rotX = 1; }
-    if (rotX < -1) { rotX = -1; }
-    if (rotY > 1) { rotY = 1; }
-    if (rotY < -1) { rotY = -1; }
-    // set css property so canvas can visually rotate on page
-    document.body.style.setProperty('--rotate-x', rotX);
-    document.body.style.setProperty('--rotate-y', rotY);
+    rotation.x = convertCoordX(e.clientX) / (canvas.width / 2) - dragMouseX + dragX;
+    rotation.y = convertCoordY(e.clientY) / (canvas.height / 2) - dragMouseY + dragY;
+    rotation.limit(1);
+    rotateCanvas();
   }
 });
 
@@ -118,34 +107,58 @@ function convertCoordY(y) {
   return y - canvas.height / 2;
 }
 
-// get distance from one location to another
-function getDistance(x1, y1, x2, y2) {
-  a = Math.abs(x1 - x2);
-  b = Math.abs(y1 - y2);
-  return Math.sqrt(a * a + b * b);
-}
+function loadLevel(data) {
+  // reset game variables
+  levelObjects = [];
+  levelLines = [];
+  gameState = 0;
+  levelText.textContent = level;
+  timerText.textContent = "00:00";
+  rotation.x = 0;
+  rotation.y = 0;
+  rotateCanvas();
+  let prevX = 0;
+  let prevY = 0;
 
-function parseLevel(data) {
+  // parse level data and create game objects
   for (d of data) {
     switch (d[0]) {
-      case 'player':
+      case 'player': // player object
         levelObjects.push(new Player(d[1], d[2]));
         break;
-      case 'enemy':
+      case 'enemy': // enemy object
         levelObjects.push(new Enemy(d[1], d[2]));
         break;
-      case 'hline':
+      case 'hline': // horizontal line
         levelLines.push(new HLine(d[1], d[2], d[3]));
+        prevX = d[3];
+        prevY = d[2];
         break;
-      case 'vline':
+      case 'rhline': // relative horizontal line
+        levelLines.push(new HLine(prevX, prevY, d[1]));
+        prevX = d[1];
+        break;
+      case 'vline': // vertical line
         levelLines.push(new VLine(d[1], d[2], d[3]));
+        prevX = d[1];
+        prevY = d[3];
         break;
-      case 'finish':
-        levelLines.push(new Finish(d[1], d[2], d[3], d[4]));
+      case 'rvline': // relative vertical line
+        levelLines.push(new VLine(prevX, prevY, d[1]));
+        prevY = d[1];
         break;
-      
+      case 'finish': // goal area
+        // use unshift instead of push so finish area is drawn first
+        levelLines.unshift(new Finish(d[1], d[2], d[3], d[4]));
+        break;
       default:
         console.log(d[0] + " object not found")
     }
   }
+}
+
+// set css property so canvas can visually rotate on page
+function rotateCanvas() {
+  document.body.style.setProperty('--rotate-x', rotation.x);
+  document.body.style.setProperty('--rotate-y', rotation.y);
 }

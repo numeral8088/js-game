@@ -14,7 +14,6 @@
 body {
   /* center elements on page */
   display: grid;
-  grid-template-rows: auto, 1fr;
   height: 100vh;
   place-content: center;
   gap: 2rem;
