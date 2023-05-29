@@ -1,9 +1,9 @@
 // setup canvas, timer and level elements on page
-const canvas = document.getElementById("gameCanvas");
+// const canvas = document.getElementById("gameCanvas");
 const levelText = document.querySelector(".level > span");
 const timerText = document.querySelector(".timer > span");
 // setup canvas rendering context
-const ctx = canvas.getContext("2d");
+// const ctx = canvas.getContext("2d");
 
 let rotX = 0;
 let rotY = 0;
@@ -19,19 +19,47 @@ let startTime;
 let currentTime;
 
 // run game loop
-setInterval(game, 1 / 30);
+// setInterval(game, 1 / 30);
 
 let level = 1;
+let levelLines = [];
+let levelObjects = [];
+
+function setup() {
+  createCanvas(480, 480);
+  parseLevel(levelData[level]);
+}
+
+function draw() {
+  clear();
+  // for (obj of levelData[level][0]) {
+  //   if (gameState == 1) {
+  //     obj.update();
+  //   }
+  //   obj.draw();
+  // }
+  for (obj of levelLines) {
+    obj.draw();
+  }
+  for (obj of levelObjects) {
+    obj.update();
+    obj.draw();
+  }
+}
 
 // game loop
 function game() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  for (obj of levelData[level]) {
+  for (obj of levelData[level][0]) {
     if (gameState == 1) {
       obj.update();
     }
+    obj.draw();
+  }
+
+  for (obj of levelData[level][1]) {
     obj.draw();
   }
 
@@ -91,8 +119,33 @@ function convertCoordY(y) {
 }
 
 // get distance from one location to another
-// function getDistance(x1, y1, x2, y2) {
-//   a = Math.abs(x1 - x2);
-//   b = Math.abs(y1 - y2);
-//   return sqrt(a^2 + b^2);
-// }
+function getDistance(x1, y1, x2, y2) {
+  a = Math.abs(x1 - x2);
+  b = Math.abs(y1 - y2);
+  return Math.sqrt(a * a + b * b);
+}
+
+function parseLevel(data) {
+  for (d of data) {
+    switch (d[0]) {
+      case 'player':
+        levelObjects.push(new Player(d[1], d[2]));
+        break;
+      case 'enemy':
+        levelObjects.push(new Enemy(d[1], d[2]));
+        break;
+      case 'hline':
+        levelLines.push(new HLine(d[1], d[2], d[3]));
+        break;
+      case 'vline':
+        levelLines.push(new VLine(d[1], d[2], d[3]));
+        break;
+      case 'finish':
+        levelLines.push(new Finish(d[1], d[2], d[3], d[4]));
+        break;
+      
+      default:
+        console.log(d[0] + " object not found")
+    }
+  }
+}

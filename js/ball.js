@@ -3,6 +3,7 @@ class Ball {
   constructor(x, y, color) {
     this.x = x;
     this.y = y;
+    this.pos = createVector(x, y);
     this.vx = 0;
     this.vy = 0;
     this.ax = 0;
@@ -13,11 +14,9 @@ class Ball {
 
   // draw ball on canvas
   draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill()
+    fill(this.color);
+    strokeWeight(0);
+    circle(this.x, this.y, 20);
   }
 
   // update position on the canvas
@@ -30,15 +29,6 @@ class Ball {
     this.x += this.vx;
     this.y += this.vy;
   }
-
-  // checkCollision(obj) {
-  //   if (getDistance(this.x, this.y, obj.x, obj.y) < this.radius * 2) {
-  //     this.ax = this.vx * -2;
-  //     this.ay = this.vy * -2;
-  //     obj.ax = obj.vx * -2;
-  //     obj.ay = obj.vy * -2;
-  //   }
-  // }
 
   // check collisions with canvas edges
   checkEdges() {
@@ -70,7 +60,7 @@ class Ball {
 
 class Player extends Ball {
   constructor(x, y) {
-    super(x, y, "#f00");
+    super(x, y, '#f00');
   }
 }
 
