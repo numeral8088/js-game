@@ -5,9 +5,6 @@ const timerText = document.querySelector(".timer > span");
 // setup canvas rendering context
 const ctx = canvas.getContext("2d");
 
-// setup enemies array
-let enemies = [];
-
 let rotX = 0;
 let rotY = 0;
 let dragX = 0;
@@ -15,8 +12,8 @@ let dragY = 0;
 let dragMouseX = 0;
 let dragMouseY = 0;
 let isDragging = false;
-let level = 1;
-let levelStarted = false;
+
+let gameState = 0;
 
 let startTime;
 let currentTime;
@@ -24,10 +21,32 @@ let currentTime;
 // run game loop
 setInterval(game, 1 / 30);
 
+let level = 1;
+
+// game loop
+function game() {
+  // clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (obj of levelData[level]) {
+    if (gameState == 1) {
+      obj.update();
+    }
+    obj.draw();
+  }
+
+  // update timer and level counter
+  if (gameState == 1) {
+    currentTime = new Date();
+    timerText.textContent = formatTimer(Math.round((currentTime - startTime) / 1000));
+    levelText.textContent = level;
+  }
+}
+
 // mouse events for rotating the canvas
 document.body.addEventListener("mousedown", e => {
-  if (!levelStarted) {
-    levelStarted = true;
+  if (gameState == 0) {
+    gameState = 1;
     startTime = new Date();
   }
   dragX = rotX;
@@ -56,39 +75,6 @@ document.body.addEventListener("mousemove", e => {
   }
 });
 
-// game loop
-function game() {
-  // clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // update game objects
-  // updateObjects();
-
-  // draw game objects
-  // for (e of enemies) {
-  //   e.drawBall();
-  // }
-  // player.drawBall();
-
-  // draw level lines
-  drawLevel(levelData[level]);
-
-  // update timer and level counter
-  if (levelStarted) {
-    currentTime = new Date();
-    timerText.textContent = formatTimer(Math.round((currentTime - startTime) / 1000));
-    levelText.textContent = level;
-  }
-}
-
-// update game objects
-function updateObjects() {
-  player.updatePosition();
-  for (e of enemies) {
-    e.updatePosition();
-  }
-}
-
 // format timer as MM:SS
 function formatTimer(s) {
   let min = Math.floor(s / 60);
@@ -110,23 +96,3 @@ function convertCoordY(y) {
 //   b = Math.abs(y1 - y2);
 //   return sqrt(a^2 + b^2);
 // }
-
-function drawLevel(level) {
-  for (obj of level) {
-    obj.draw();
-  }
-}
-
-function levelStart() {
-  // create player object
-  let ps = levelData[level][0];
-  let player = new Ball(ps.x, ps.y, "#f00");
-  // create enemy objects
-  // for (let i = 0; i < 5; i++) {
-  //   x = Math.random() * 480;
-  //   y = Math.random() * 480;
-  //   enemies[i] = new Ball(x, y, "#00f");
-  // }
-}
-
-levelStart();

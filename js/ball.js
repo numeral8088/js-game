@@ -12,7 +12,7 @@ class Ball {
   }
 
   // draw ball on canvas
-  drawBall() {
+  draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
     ctx.closePath();
@@ -21,7 +21,7 @@ class Ball {
   }
 
   // update position on the canvas
-  updatePosition() {
+  update() {
     this.ax = rotX * 0.01 + this.vx * -0.005;
     this.ay = rotY * 0.01 + this.vy * -0.005;
     this.checkEdges();
@@ -65,5 +65,17 @@ class Ball {
       this.ax = this.vx * -2;
       this.ay = this.vy * -2;
     }
+  }
+}
+
+class Player extends Ball {
+  constructor(x, y) {
+    super(x, y, "#f00");
+  }
+}
+
+class Enemy extends Ball {
+  constructor(x, y) {
+    super(x, y, "#00f");
   }
 }
