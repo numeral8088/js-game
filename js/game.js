@@ -14,7 +14,7 @@ let gameState = 0;
 let startTime;
 let currentTime;
 
-let level = 1;
+let level = 0;
 let levelLines = [];
 let levelObjects = [];
 
@@ -24,6 +24,8 @@ function setup() {
   loadLevel(levelData[level]);
 }
 
+let gravity;
+
 function draw() {
   clear();
 
@@ -32,24 +34,30 @@ function draw() {
       obj.draw();
     }
 
-  let gravity = p5.Vector.mult(rotation, .5);
+  gravity = p5.Vector.mult(rotation, .5);
 
   // update and draw objects
   for (obj of levelObjects) {
     if (gameState == 1) {
       obj.applyForce(gravity);
       
-      for (wall of levelLines) {
-        let wallType = wall.constructor.name;
-        switch (wallType) {
+      for (l of levelLines) {
+        let type = l.constructor.name;
+        switch (type) {
           case "VLine":
-            obj.collideV(wall);
+            obj.collideV(l);
             break;
           case "HLine":
-            obj.collideH(wall);
+            obj.collideH(l);
+            break;
+          case "HDoor":
+            if (!l.open) obj.collideH(l);
+            break;
+          case "Plate":
+            obj.collideP(l);
             break;
           case "Finish":
-            obj.collideF(wall);
+            obj.collideF(l);
             break;
         }
       }
@@ -163,6 +171,15 @@ function loadLevel(data) {
       case 'rvline': // relative vertical line
         levelLines.push(new VLine(prevX, prevY, d[1]));
         prevY = d[1];
+        break;
+      case 'hdoor': // vertical line
+        levelLines.unshift(new HDoor(d[1], d[2], d[3], d[4]));
+        prevX = d[1];
+        prevY = d[3];
+        break;
+      case 'plate': // pressure plate
+        // use unshift instead of push so finish area is drawn first
+        levelLines.unshift(new Plate(d[1], d[2], d[3], d[4], d[5]));
         break;
       case 'finish': // goal area
         // use unshift instead of push so finish area is drawn first
