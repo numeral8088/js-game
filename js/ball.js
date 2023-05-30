@@ -8,6 +8,7 @@ class Ball {
     this.radius = 10;
     this.mass = sqrt(this.radius);
     this.velLoss = -.5;
+    this.frictionLoss = 0.05;
   }
 
   // draw ball on canvas
@@ -44,12 +45,14 @@ class Ball {
         if (distance <= 0 || this.pos.y - this.vel.y <= y) {
           this.pos.y = y + this.radius;
           this.vel.y *= this.velLoss;
+          this.vel.x *= 1 - this.frictionLoss;
         }
       } else {
         distance = y - (this.pos.y + this.radius);
         if (distance <= 0 || this.pos.y + this.vel.y >= y) {
           this.pos.y = y - this.radius;
           this.vel.y *= this.velLoss;
+          this.vel.x *= 1 - this.frictionLoss;
         }
       }
     }
@@ -65,12 +68,14 @@ class Ball {
         if (distance <= 0 || this.pos.x - this.vel.x <= x) {
           this.pos.x = x + this.radius;
           this.vel.x *= this.velLoss;
+          this.vel.y *= 1 - this.frictionLoss;
         }
       } else {
         distance = x - (this.pos.x + this.radius);
         if (distance <= 0 || this.pos.x + this.vel.x >= x) {
           this.pos.x = x - this.radius;
           this.vel.x *= this.velLoss;
+          this.vel.y *= 1 - this.frictionLoss;
         }
       }
     }
@@ -120,9 +125,9 @@ class Ball {
     }
   }
 
-  collideF(wall) {
-    let xCondition = this.pos.x > wall.x && this.pos.x < wall.x + wall.w;
-    let yCondition = this.pos.y > wall.y && this.pos.y < wall.y + wall.h;
+  collideF(l) {
+    let xCondition = this.pos.x > l.x && this.pos.x < l.x + l.w;
+    let yCondition = this.pos.y > l.y && this.pos.y < l.y + l.h;
     if (xCondition && yCondition) {
       if (this.constructor.name == "Player") {
         levelFinish();
@@ -130,13 +135,13 @@ class Ball {
     }
   }
 
-  collideP(wall) {
-    let xCondition = this.pos.x > wall.x && this.pos.x < wall.x + wall.w;
-    let yCondition = this.pos.y > wall.y && this.pos.y < wall.y + wall.h;
-    if (xCondition && yCondition) {
-      // openDoor(wall.id);
-    }
-  }
+  // collideP(l) {
+  //   let xCondition = this.pos.x > l.x && this.pos.x < l.x + l.w;
+  //   let yCondition = this.pos.y > l.y && this.pos.y < l.y + l.h;
+  //   if (xCondition && yCondition) {
+  //     openDoor(l.id);
+  //   }
+  // }
 
   edges() {
     this.collideHPlane(0, 1);

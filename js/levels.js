@@ -60,7 +60,25 @@ class HDoor extends HLine {
     if (this.open) {
       this.color = 200;
     } else {
-      this.color = 128;
+      this.color = 80;
+    }
+    super.draw();
+  }
+}
+
+class VDoor extends VLine {
+  constructor(x, y, h, id) {
+    super(x, y, h);
+    this.id = id;
+    this.r = 2;
+    this.open = false;
+  }
+
+  draw() {
+    if (this.open) {
+      this.color = 200;
+    } else {
+      this.color = 80;
     }
     super.draw();
   }
@@ -72,6 +90,15 @@ class Plate extends Finish {
     this.id = id;
     this.color = 200;
     this.pressed = false;
+    this.objects = 0;
+  }
+
+  collideWithObject(obj) {
+    let x = obj.pos.x > this.x && obj.pos.x < this.x + this.w;
+    let y = obj.pos.y > this.y && obj.pos.y < this.y + this.h;
+    if (x && y) {
+      return true
+    }
   }
 }
 
@@ -88,16 +115,18 @@ levelData[0] = [
   ["hline", 60, 240, 240],
   // draw a vertical line
   ["vline", 240, 240, 60],
-  // // draw a horizontal line from previous coordinates
+  // draw a horizontal line from previous coordinates
   ["rhline", 300],
-  // // draw a vertical line from previous coordinates
+  // draw a vertical line from previous coordinates
   ["rvline", 240],
-  // // level goal area
+  // level goal area
   ["finish", 440, 0, 40, 40],
-  // // pressure plate used for actions such as doors when ball touches
+  // pressure plate used for actions such as doors when a ball rolls over
   ["plate", 0, 440, 40, 40, 0],
-  // // vertical door line opens with pressure plate with same id
+  // horizontal door line that opens with pressure plate with same id
   ["hdoor", 240, 240, 300, 0],
+  // vertical door line that opens with pressure plate with same id
+  ["vdoor", 60, 240, 300, 0],
 ]
 
 // level 1

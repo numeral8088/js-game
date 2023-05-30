@@ -2,12 +2,27 @@
 const levelText = document.querySelector(".level > span");
 const timerText = document.querySelector(".timer > span");
 
+// element used to capture mouse input and rotate the canvas
+const mouseCapture = document.getElementById('captureMouseDrag');
+
+// elements used for the level warp feature
+const debugOptions = document.getElementById('debugOptions');
+const debugWarpCounter = document.getElementById('debugWarpCounter');
+const debugWarpButton = document.getElementById('debugWarpButton');
+
+// elements used for the level complete dialog
+const dialog = document.getElementById('levelCompleteDialog');
+const nextLevelButton = document.getElementById('nextLevelButton');
+const dialogLevelText = document.querySelector('dialog>h1>span');
+const dialogTimerText = document.querySelector('dialog>p>span');
+
 let rotation;
 let dragX = 0;
 let dragY = 0;
 let dragMouseX = 0;
 let dragMouseY = 0;
 let isDragging = false;
+let showDebug = false;
 
 let gameState = 0;
 
@@ -16,6 +31,7 @@ let currentTime;
 
 let level = 0;
 let levelLines = [];
+let levelDoors = [];
 let levelObjects = [];
 
 function setup() {
@@ -29,41 +45,30 @@ let gravity;
 function draw() {
   clear();
 
-    // draw level lines
-    for (obj of levelLines) {
-      obj.draw();
-    }
+  // open level doors if needed
+  checkDoors();
+
+  // draw level doors
+  for (obj of levelDoors) {
+    obj.draw();
+  }
+
+  // draw level lines
+  for (obj of levelLines) {
+    obj.draw();
+  }
 
   gravity = p5.Vector.mult(rotation, .5);
-
+  something = 0;
   // update and draw objects
   for (obj of levelObjects) {
     if (gameState == 1) {
       obj.applyForce(gravity);
-      
-      for (l of levelLines) {
-        let type = l.constructor.name;
-        switch (type) {
-          case "VLine":
-            obj.collideV(l);
-            break;
-          case "HLine":
-            obj.collideH(l);
-            break;
-          case "HDoor":
-            if (!l.open) obj.collideH(l);
-            break;
-          case "Plate":
-            obj.collideP(l);
-            break;
-          case "Finish":
-            obj.collideF(l);
-            break;
-        }
-      }
-
+      // run collision checks on all level lines
+      runCollisionChecks();
       obj.update();
     }
+    // draw objects
     obj.draw();
   }
 
@@ -72,6 +77,39 @@ function draw() {
     currentTime = new Date();
     timerText.textContent = formatTimer(Math.round((currentTime - startTime) / 1000));
     levelText.textContent = level;
+  }
+
+}
+
+function runCollisionChecks() {
+  for (l of levelLines) {
+    let type = l.constructor.name;
+    switch (type) {
+      case "VLine":
+        obj.collideV(l);
+        break;
+      case "HLine":
+        obj.collideH(l);
+        break;
+      case "Plate":
+        if (l.collideWithObject(obj)) l.objects++;
+        break;
+      case "Finish":
+        obj.collideF(l);
+        break;
+    }
+  }
+
+  for (d of levelDoors) {
+    let type = d.constructor.name;
+    switch (type) {
+      case "HDoor":
+        if (!d.open) obj.collideH(d);
+        break;
+      case "VDoor":
+        if (!d.open) obj.collideV(d);
+        break;
+    }
   }
 }
 
@@ -101,20 +139,30 @@ const mouseMoveHandler = (e) => {
   }
 }
 
+// debug options event listeners
+const keyDownHandler = (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key == "Escape") {
+    debugOptions.removeAttribute('hidden');
+  }
+}
+
 // mouse events for rotating the canvas
 function setupMouseListeners() {
   document.body.setAttribute('drag', "");
-  document.body.addEventListener("mousedown", mouseDownHandler);
-  document.body.addEventListener("mouseup", mouseUpHandler);
-  document.body.addEventListener("mousemove", mouseMoveHandler);
+  mouseCapture.addEventListener("mousedown", mouseDownHandler);
+  mouseCapture.addEventListener("mouseup", mouseUpHandler);
+  mouseCapture.addEventListener("mousemove", mouseMoveHandler);
+  document.body.addEventListener("keydown", keyDownHandler);
 }
 
 function removeMouseListeners() {
   document.body.removeAttribute('drag');
   isDragging = false;
-  document.body.removeEventListener("mousedown", mouseDownHandler);
-  document.body.removeEventListener("mouseup", mouseUpHandler);
-  document.body.removeEventListener("mousemove", mouseMoveHandler);
+  mouseCapture.removeEventListener("mousedown", mouseDownHandler);
+  mouseCapture.removeEventListener("mouseup", mouseUpHandler);
+  mouseCapture.removeEventListener("mousemove", mouseMoveHandler);
+  document.body.removeEventListener("keydown", keyDownHandler);
+
 }
 
 // format timer as MM:SS
@@ -136,6 +184,7 @@ function loadLevel(data) {
   // reset game variables
   levelObjects = [];
   levelLines = [];
+  levelDoors = [];
   gameState = 0;
   levelText.textContent = level;
   timerText.textContent = "00:00";
@@ -173,7 +222,12 @@ function loadLevel(data) {
         prevY = d[1];
         break;
       case 'hdoor': // vertical line
-        levelLines.unshift(new HDoor(d[1], d[2], d[3], d[4]));
+        levelDoors.unshift(new HDoor(d[1], d[2], d[3], d[4]));
+        prevX = d[3];
+        prevY = d[2];
+        break;
+      case 'vdoor': // vertical line
+        levelDoors.unshift(new VDoor(d[1], d[2], d[3], d[4]));
         prevX = d[1];
         prevY = d[3];
         break;
@@ -197,11 +251,6 @@ function rotateCanvas() {
   document.body.style.setProperty('--rotate-y', rotation.y);
 }
 
-const dialog = document.getElementById('levelCompleteDialog');
-const nextLevelButton = document.getElementById('nextLevelButton');
-const dialogLevelText = document.querySelector('dialog>h1>span');
-const dialogTimerText = document.querySelector('dialog>p>span');
-
 function levelFinish() {
   removeMouseListeners();
   gameState = 0;
@@ -214,9 +263,45 @@ nextLevelButton.addEventListener('click', (e) => {
   level += 1;
   loadLevel(levelData[level]);
   dialog.close();
-})
+});
+
+debugWarpButton.addEventListener('click', (e) => {
+  let lvl = parseInt(debugWarpCounter.value);
+  gotoLevel(lvl);
+  debugOptions.setAttribute("hidden", "");
+});
 
 function gotoLevel(l) {
   level = l;
   loadLevel(levelData[level]);
+}
+
+function checkDoors() {
+  for (l of levelLines) {
+    if (l.constructor.name == "Plate") {
+      if (l.objects > 0) {
+        l.objects = 0;
+        openDoors(l.id, true);
+      } else {
+        openDoors(l.id, false);
+      }
+      // for (d of levelDoors) {
+      //   if ((l.id == d.id) && l.objects > 0) {
+      //     console.log(l.objects);
+      //     l.objects = 0;
+      //     d.open = true;
+      //   } else if ((l.id == d.id) && l.objects == 0) {
+      //     d.open = false;
+      //   }
+      // }
+    }
+  }
+}
+
+function openDoors(id, state) {
+  for (d of levelDoors) {
+    if (d.id == id) {
+      d.open = (state == null ? true : state);
+    }
+  }
 }

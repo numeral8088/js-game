@@ -4,11 +4,20 @@
   margin: 0;
 }
 
+.flex {
+  display: flex;
+  gap: 0.5em;
+}
+
 :root {
   font-family: "CGA", monospace;
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
+  --bg: #fff;
+  --accent: #00b050;
+  --on-accent: white;
+  --shadow: #606060;
 }
 
 body {
@@ -17,13 +26,20 @@ body {
   height: 100vh;
   place-content: center;
   gap: 2rem;
+  background-color: var(--bg);
 }
 
-body[drag] {
+#captureMouseDrag {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+}
+
+body[drag] #captureMouseDrag {
   cursor: grab;
 }
 
-body[drag]:active {
+body[drag] #captureMouseDrag:active {
   cursor: grabbing;
 }
 
@@ -59,6 +75,7 @@ dialog {
   transition: transform 200ms;
   display: block;
   visibility: collapse;
+  z-index: 100;
 }
 
 dialog[open] {
@@ -79,7 +96,7 @@ dialog h1 {
 button {
   --transition-time: 200ms;
   position: relative;
-  color: white;
+  color: var(--on-accent);
   background-color: transparent;
   border: none;
   font: inherit;
@@ -88,18 +105,19 @@ button {
   outline: none;
   transition: transform var(--transition-time);
   cursor: pointer;
+  min-width: 8ch;
 }
 
 button::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-color: #00b050;
+  background-color: var(--accent);
   z-index: -1;
 }
 
 button:focus-visible {
-  outline: 0.125em solid #00b050;
+  outline: 0.125em solid var(--accent);
   outline-offset: 0.125em;
 }
 
@@ -107,7 +125,7 @@ button::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-color: #606060;
+  background-color: var(--shadow);
   z-index: -2;
   transform: translate(.5em, .5em);
   transition: transform var(--transition-time);
@@ -120,4 +138,27 @@ button:active {
 
 button:active::after {
   transform: translate(0, 0);
+}
+
+#debugOptions {
+  order: 2;
+  z-index: 3;
+  background-color: var(--bg);
+}
+
+input {
+  position: relative;
+  color: var(--on-accent);
+  background-color: var(--accent);
+  border: none;
+  font: inherit;
+  padding: 1em;
+  margin: 1em .5em .5em 0;
+  width: 4ch;
+  box-shadow: var(--shadow) .5em .5em;
+}
+
+input:focus {
+  outline: 0.125em solid var(--accent);
+  outline-offset: 0.125em;
 }

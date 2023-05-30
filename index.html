@@ -10,16 +10,32 @@
 </head>
 
 <body>
+  <!-- level finish dialog box -->
   <dialog id="levelCompleteDialog">
     <h1>Level <span>1</span> Complete! ☻</h1>
     <p>Time: <span>00:00</span></p>
     <button id="nextLevelButton">Next Level</button>
   </dialog>
+
+  <!-- debugging options -->
+  <div id="debugOptions" hidden>
+    <p>Warp to level:</p>
+    <div class="flex">
+      <input id="debugWarpCounter" type="number" min="0" max="40">
+      <button id="debugWarpButton">Warp!</button>
+    </div>
+  </div>
+
+  <!-- scoreboard -->
   <div class="score-container">
     <div class="level">Level: <span>1</span></div>
     <div class="timer">Time: <span>00:00</span></div>
   </div>
-  <!-- <canvas id="gameCanvas" width="480" height="480"></canvas> -->
+
+  <!-- capture mouse dragging events -->
+  <div id="captureMouseDrag"></div>
+
+  <!-- game scripts -->
   <script src="js/ball.js"></script>
   <script src="js/levels.js"></script>
   <script src="js/game.js"></script>
