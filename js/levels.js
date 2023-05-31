@@ -38,7 +38,7 @@ class Finish {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.color = "red";
+    this.color = 'red';
   }
 
   draw() {
@@ -108,48 +108,89 @@ let levelData = [];
 // debug level
 levelData[0] = [
   // set player spawn
-  ["player", 270, 90],
+  ['player', 270, 90],
   // set an enemy spawn
-  ["enemy", 400, 400],
+  ['enemy', 400, 400],
   // draw a horizontal line
-  ["hline", 60, 240, 240],
+  ['hline', 60, 240, 240],
   // draw a vertical line
-  ["vline", 240, 240, 60],
+  ['vline', 240, 240, 60],
   // draw a horizontal line from previous coordinates
-  ["rhline", 300],
+  ['rhline', 300],
   // draw a vertical line from previous coordinates
-  ["rvline", 240],
+  ['rvline', 240],
   // level goal area
-  ["finish", 440, 0, 40, 40],
+  ['finish', 440, 0, 40, 40],
   // pressure plate used for actions such as doors when a ball rolls over
-  ["plate", 0, 440, 40, 40, 0],
+  ['plate', 0, 440, 40, 40, 0],
+  ['plate', 0, 0, 40, 40, 1],
   // horizontal door line that opens with pressure plate with same id
-  ["hdoor", 240, 240, 300, 0],
+  ['hdoor', 240, 240, 300, 0],
   // vertical door line that opens with pressure plate with same id
-  ["vdoor", 60, 240, 300, 0],
+  ['vdoor', 60, 240, 300, 1],
 ]
 
 // level 1
 levelData[1] = [
-  ["hline", 0, 420, 420],
-  ["vline", 420, 420, 60],
-  ["rhline", 60],
-  ["rvline", 120],
-  ["rhline", 360],
-  ["hline", 0, 180, 360],
-  ["rvline", 360],
-  ["vline", 300, 420, 240],
-  ["rhline", 60],
-  ["rvline", 360],
-  ["rhline", 240],
-  ["rvline", 300],
-  ["rhline", 120],
-  ["player", 30, 450],
-  ["enemy", 90, 90],
-  ["finish", 180, 300, 60, 60],
+  ['hline', 0, 420, 420],
+  ['vline', 420, 420, 60],
+  ['rhline', 60],
+  ['rvline', 120],
+  ['rhline', 360],
+  ['hline', 0, 180, 360],
+  ['rvline', 360],
+  ['vline', 300, 420, 240],
+  ['rhline', 60],
+  ['rvline', 360],
+  ['rhline', 240],
+  ['rvline', 300],
+  ['rhline', 120],
+  ['player', 30, 450],
+  ['enemy', 90, 90],
+  ['finish', 180, 300, 60, 60],
 ]
 
 // level 2  
 levelData[2] = [
-  ["player", 240, 240],
+  ['player', 210, 330],
+  ['enemy', 90, 90],
+  ['vline', 240, 300, 360],
+  ['rhline', 60],
+  ['rvline', 420],
+  ['rhline', 300],
+  ['rvline', 240],
+  ['rhline', 0],
+  ['hline', 0, 300, 180],
+  ['hline', 420, 420, 360],
+  ['rvline', 180],
+  ['rhline', 0],
+  ['vline', 420, 360, 120],
+  ['rhline', 60],
+  ['rvline', 60],
+  ['rhline', 480],
+  ['finish', 420, 0, 60, 60],
+]
+
+// level 3
+levelData[3] = [
+  ['vline', 420, 0, 180],
+  ['vline', 360, 60, 240],
+  ['vline', 300, 0, 180],
+  ['vline', 240, 60, 240],
+  ['vline', 180, 0, 180],
+  ['vline', 120, 60, 240],
+  ['vline', 60, 0, 180],
+  ['hline', 0, 240, 480],
+  ['vline', 420, 300, 480],
+  ['vline', 360, 240, 420],
+  ['vline', 300, 300, 480],
+  ['vline', 240, 240, 420],
+  ['vline', 180, 300, 480],
+  ['vline', 120, 240, 420],
+  ['vline', 60, 300, 480],
+  ['plate', 0, 420, 60, 60, 0],
+  ['vdoor', 60, 180, 240, 0],
+  ['finish', 0, 0, 60, 60],
+  ['player', 450, 30],
+  ['enemy', 450, 450],
 ]

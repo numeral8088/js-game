@@ -29,7 +29,7 @@ let gameState = 0;
 let startTime;
 let currentTime;
 
-let level = 0;
+let level = 1;
 let levelLines = [];
 let levelDoors = [];
 let levelObjects = [];

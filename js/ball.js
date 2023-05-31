@@ -8,7 +8,7 @@ class Ball {
     this.radius = 10;
     this.mass = sqrt(this.radius);
     this.velLoss = -.5;
-    this.frictionLoss = 0.05;
+    this.frictionLoss = 0.02;
   }
 
   // draw ball on canvas
@@ -134,14 +134,6 @@ class Ball {
       }
     }
   }
-
-  // collideP(l) {
-  //   let xCondition = this.pos.x > l.x && this.pos.x < l.x + l.w;
-  //   let yCondition = this.pos.y > l.y && this.pos.y < l.y + l.h;
-  //   if (xCondition && yCondition) {
-  //     openDoor(l.id);
-  //   }
-  // }
 
   edges() {
     this.collideHPlane(0, 1);
