@@ -36,8 +36,8 @@ const colors = {
   "closedDoor": 'hsl(350, 80%, 50%)',
   "openDoor": 'hsla(350, 80%, 50%, 0.25)',
   "plate": 'hsla(147, 100%, 35%, 0.5)',
-  "platePressed": 'hsl(147, 100%, 35%)',
-  'finish': 'hsla(350, 80%, 60%, 0.75)',
+  "platePressed": 'hsla(147, 100%, 35%, 0.8)',
+  'finish': 'hsla(350, 80%, 60%, 0.7)',
   'player': 'hsl(350, 80%, 60%)',
   'enemy': 'hsl(250, 80%, 70%)',
 }
@@ -138,15 +138,17 @@ function runCollisionChecks(obj) {
 
 // mouse movement handler functions
 const mouseDownHandler = (e) => {
-  if (gameState == 0) {
-    gameState = 1;
-    startTime = new Date();
+  if (e.button == 0) {
+      if (gameState == 0) {
+      gameState = 1;
+      startTime = new Date();
+    }
+    dragX = rotation.x;
+    dragY = rotation.y;
+    dragMouseX = convertCoordX(e.clientX) / (canvas.width / 2);
+    dragMouseY = convertCoordY(e.clientY) / (canvas.height / 2);
+    isDragging = true;
   }
-  dragX = rotation.x;
-  dragY = rotation.y;
-  dragMouseX = convertCoordX(e.clientX) / (canvas.width / 2);
-  dragMouseY = convertCoordY(e.clientY) / (canvas.height / 2);
-  isDragging = true;
 }
 
 const mouseUpHandler = (e) => {

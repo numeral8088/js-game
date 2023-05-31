@@ -111,13 +111,13 @@ levelData[0] = [
   ['player', 270, 90],
   // set an enemy spawn
   ['enemy', 400, 400],
-  // draw a horizontal line
+  // draw a horizontal line from x,y to x2,y
   ['hline', 60, 240, 240],
-  // draw a vertical line
+  // draw a vertical line from x,y to x,y2
   ['vline', 240, 240, 60],
-  // draw a horizontal line from previous coordinates
+  // draw a horizontal line to x starting from previous coordinates
   ['rhline', 300],
-  // draw a vertical line from previous coordinates
+  // draw a vertical line to y starting from previous coordinates
   ['rvline', 240],
   // level goal area
   ['finish', 440, 0, 40, 40],
@@ -128,7 +128,7 @@ levelData[0] = [
   ['hdoor', 240, 240, 300, 0],
   // vertical door line that opens with pressure plate with same id
   ['vdoor', 60, 240, 300, 1],
-]
+];
 
 // level 1
 levelData[1] = [
@@ -148,7 +148,7 @@ levelData[1] = [
   ['player', 30, 450],
   ['enemy', 90, 90],
   ['finish', 180, 300, 60, 60],
-]
+];
 
 // level 2  
 levelData[2] = [
@@ -169,7 +169,7 @@ levelData[2] = [
   ['rvline', 60],
   ['rhline', 480],
   ['finish', 420, 0, 60, 60],
-]
+];
 
 // level 3
 levelData[3] = [
@@ -194,3 +194,39 @@ levelData[3] = [
   ['player', 450, 30],
   ['enemy', 450, 450],
 ]
+
+// level 4
+levelData[4] = [
+  ['player', 30, 30],
+  ['enemy', 90, 90],
+  ['hline', 0, 60, 420],
+  ['rvline', 420],
+  ['vline', 360, 480, 60],
+  ['vline', 120, 60, 120],
+  ['rhline', 60],
+  ['hdoor', 0, 120, 60, 0],
+  ['plate', 360, 120, 60, 60, 0],
+  ['vline', 300, 60, 180],
+  ['rhline', 180],
+  ['hline', 180, 120, 300],
+  ['vline', 240, 180, 240],
+  ['rhline', 300],
+  ['rvline', 300],
+  ['vline', 300, 360, 480],
+  ['vline', 240, 420, 480],
+  ['vline', 180, 480, 420],
+  ['rhline', 120],
+  ['rvline', 360],
+  ['hline', 0, 420, 60],
+  ['vline', 60, 300, 360],
+  ['rhline', 240],
+  ['rvline', 300],
+  ['hline', 0, 240, 120],
+  ['rvline', 300],
+  ['hline', 120, 180, 60],
+  ['rvline', 240],
+  ['vline', 180, 240, 360],
+  ['hdoor', 360, 120, 420, 1],
+  ['plate', 120, 360, 60, 60, 1],
+  ['finish', 360, 60, 60, 60]
+];
