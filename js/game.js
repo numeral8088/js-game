@@ -1,20 +1,22 @@
-// setup timer and level elements on page
-const levelText = document.querySelector(".level > span");
-const timerText = document.querySelector(".timer > span");
+window.onload() = function() {
+  // setup timer and level elements on page
+  const levelText = document.querySelector(".level > span");
+  const timerText = document.querySelector(".timer > span");
 
-// element used to capture mouse input and rotate the canvas
-const mouseCapture = document.getElementById('captureMouseDrag');
+  // element used to capture mouse input and rotate the canvas
+  const mouseCapture = document.getElementById('captureMouseDrag');
 
-// elements used for the level warp feature
-const debugOptions = document.getElementById('debugOptions');
-const debugWarpCounter = document.getElementById('debugWarpCounter');
-const debugWarpButton = document.getElementById('debugWarpButton');
+  // elements used for the level warp feature
+  const debugOptions = document.getElementById('debugOptions');
+  const debugWarpCounter = document.getElementById('debugWarpCounter');
+  const debugWarpButton = document.getElementById('debugWarpButton');
 
-// elements used for the level complete dialog
-const dialog = document.getElementById('levelCompleteDialog');
-const nextLevelButton = document.getElementById('nextLevelButton');
-const dialogLevelText = document.querySelector('dialog>h1>span');
-const dialogTimerText = document.querySelector('dialog>p>span');
+  // elements used for the level complete dialog
+  const dialog = document.getElementById('levelCompleteDialog');
+  const nextLevelButton = document.getElementById('nextLevelButton');
+  const dialogLevelText = document.querySelector('dialog>h1>span');
+  const dialogTimerText = document.querySelector('dialog>p>span');
+}
 
 let rotation;
 let dragX = 0;
