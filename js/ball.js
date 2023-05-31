@@ -150,12 +150,12 @@ class Ball {
 
 class Player extends Ball {
   constructor(x, y) {
-    super(x, y, '#f00');
+    super(x, y, colors.player);
   }
 }
 
 class Enemy extends Ball {
   constructor(x, y) {
-    super(x, y, "#00f");
+    super(x, y, colors.enemy);
   }
 }

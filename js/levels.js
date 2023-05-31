@@ -4,7 +4,7 @@ class HLine {
     this.y = y;
     this.w = w;
     this.r = 3;
-    this.color = 0;
+    this.color = colors.line;
   }
 
   draw() {
@@ -21,7 +21,7 @@ class VLine {
     this.y = y;
     this.h = h;
     this.r = 3;
-    this.color = 0;
+    this.color = colors.line;
   }
 
   draw() {
@@ -38,7 +38,7 @@ class Finish {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.color = 'red';
+    this.color = colors.finish;
   }
 
   draw() {
@@ -58,9 +58,9 @@ class HDoor extends HLine {
 
   draw() {
     if (this.open) {
-      this.color = 200;
+      this.color = colors.openDoor;
     } else {
-      this.color = 80;
+      this.color = colors.closedDoor;
     }
     super.draw();
   }
@@ -76,9 +76,9 @@ class VDoor extends VLine {
 
   draw() {
     if (this.open) {
-      this.color = 200;
+      this.color = colors.openDoor;
     } else {
-      this.color = 80;
+      this.color = colors.closedDoor;
     }
     super.draw();
   }
@@ -88,7 +88,7 @@ class Plate extends Finish {
   constructor(x, y, w, h, id) {
     super(x, y, w, h);
     this.id = id;
-    this.color = 200;
+    this.color = colors.plate;
     this.pressed = false;
     this.objects = 0;
   }

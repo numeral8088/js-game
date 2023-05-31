@@ -14,10 +14,12 @@
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
-  --bg: #fff;
-  --accent: #00b050;
+  --bg: #000;
+  --dialog-bg: #000;
+  --col: hsl(190, 100%, 80%);
+  --accent: hsl(220, 100%, 60%);
   --on-accent: white;
-  --shadow: #606060;
+  --shadow: hsl(220, 100%, 25%);
 }
 
 body {
@@ -27,6 +29,7 @@ body {
   place-content: center;
   gap: 2rem;
   background-color: var(--bg);
+  color: var(--col);
 }
 
 #captureMouseDrag {
@@ -54,8 +57,15 @@ body[drag] #captureMouseDrag:active {
 }
 
 canvas {
-  background-color: #eee;
-  border: 8px solid #000;
+  background-color: var(--canvas-bg, #eee);
+  background-image:
+    linear-gradient(45deg, var(--canvas-bg2, #0000) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--canvas-bg2, #0000) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--canvas-bg2, #0000) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--canvas-bg2, #0000) 75%);
+  background-size: 30px 30px;
+  background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+  border: 8px solid var(--canvas-border, #000);
   box-shadow: calc(var(--rotate-x, 0) * 10px) calc(var(--rotate-y, 0) * 10px + 10px) 20px #0001;
   /* rotation multiplier */
   --rotation: 10deg;
@@ -76,20 +86,26 @@ dialog {
   display: block;
   visibility: collapse;
   z-index: 100;
+  background-color: var(--dialog-bg);
+  color: inherit;
+  border: 0.25em solid var(--accent);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.25);
 }
 
 dialog[open] {
   margin: auto;
   padding: 1rem;
   width: min(90%, 40ch);
-  border: 0.25em solid currentColor;
   transform: translateY(0);
   visibility: visible;
 
 }
 
 dialog h1 {
-  border-bottom: .25rem solid currentColor;
+  border-bottom: .25rem solid var(--accent);
   margin-bottom: .5rem;
 }
 

@@ -29,6 +29,24 @@ let gameState = 0;
 let startTime;
 let currentTime;
 
+const colors = {
+  'bg': 'hsl(0, 0%, 0%)',
+  'bg2': 'hsl(220, 50%, 10%)',
+  "line": 'hsl(220, 80%, 50%)',
+  'border': 'hsl(220, 80%, 50%)',
+  "closedDoor": 'hsl(350, 80%, 50%)',
+  "openDoor": 'hsla(350, 80%, 50%, 0.5)',
+  "plate": 'hsla(147, 100%, 35%, 0.5)',
+  "platePressed": 'hsl(147, 100%, 35%)',
+  'finish': 'hsla(350, 80%, 60%, 0.75)',
+  'player': 'hsl(350, 80%, 60%)',
+  'enemy': 'hsl(250, 80%, 70%)',
+}
+
+document.body.style.setProperty('--canvas-bg', colors.bg);
+document.body.style.setProperty('--canvas-bg2', colors.bg2);
+document.body.style.setProperty('--canvas-border', colors.border);
+
 let level = 1;
 let levelLines = [];
 let levelDoors = [];
@@ -281,19 +299,12 @@ function checkDoors() {
     if (l.constructor.name == "Plate") {
       if (l.objects > 0) {
         l.objects = 0;
+        l.color = colors.platePressed;
         openDoors(l.id, true);
       } else {
         openDoors(l.id, false);
+        l.color = colors.plate;
       }
-      // for (d of levelDoors) {
-      //   if ((l.id == d.id) && l.objects > 0) {
-      //     console.log(l.objects);
-      //     l.objects = 0;
-      //     d.open = true;
-      //   } else if ((l.id == d.id) && l.objects == 0) {
-      //     d.open = false;
-      //   }
-      // }
     }
   }
 }
