@@ -11,7 +11,8 @@
 
 :root {
   font-family: "CGA", monospace;
-  font-size: 16px;
+  /* font-size: 16px; */
+  font-size: clamp(4px, 2.66vmin, 16px);
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
   --bg: #000;
@@ -57,15 +58,17 @@ body[drag] #captureMouseDrag:active {
 }
 
 canvas {
+  width: 30em !important;
+  height: 30em !important;
   background-color: var(--canvas-bg, #eee);
   background-image:
     linear-gradient(45deg, var(--canvas-bg2, #0000) 25%, transparent 25%),
     linear-gradient(-45deg, var(--canvas-bg2, #0000) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, var(--canvas-bg2, #0000) 75%),
     linear-gradient(-45deg, transparent 75%, var(--canvas-bg2, #0000) 75%);
-  background-size: 30px 30px;
-  background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
-  border: 8px solid var(--canvas-border, #000);
+  background-size: 1.875em 1.875em;
+  background-position: 0 0, 0 0.9375em, 0.9375em -0.9375em, -0.9375em 0px;
+  border: 0.5em solid var(--canvas-border, #000);
   box-shadow: calc(var(--rotate-x, 0) * 10px) calc(var(--rotate-y, 0) * 10px + 10px) 20px #0001;
   /* rotation multiplier */
   --rotation: 10deg;

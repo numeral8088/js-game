@@ -162,6 +162,12 @@ const keyDownHandler = (e) => {
   }
 }
 
+// rotation handler for mobile devices motion control
+const rotationHandler = (e) => {
+  rotation.x = e.gamma / 25;
+  rotation.y = e.beta / 25;
+}
+
 // mouse events for rotating the canvas
 function setupMouseListeners() {
   document.body.setAttribute('drag', "");
@@ -169,6 +175,7 @@ function setupMouseListeners() {
   mouseCapture.addEventListener("mouseup", mouseUpHandler);
   mouseCapture.addEventListener("mousemove", mouseMoveHandler);
   document.body.addEventListener("keydown", keyDownHandler);
+  window.addEventListener('deviceorientation', rotationHandler);
 }
 
 function removeMouseListeners() {
@@ -178,6 +185,8 @@ function removeMouseListeners() {
   mouseCapture.removeEventListener("mouseup", mouseUpHandler);
   mouseCapture.removeEventListener("mousemove", mouseMoveHandler);
   document.body.removeEventListener("keydown", keyDownHandler);
+  window.removeEventListener('deviceorientation', rotationHandler);
+
 
 }
 
