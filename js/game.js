@@ -156,7 +156,8 @@ const mouseMoveHandler = (e) => {
 
 // debug options event listeners
 const keyDownHandler = (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key == "Escape") {
+  if ((e.ctrlKey || e.metaKey) && e.key == "a") {
+    e.preventDefault();
     debugOptions.removeAttribute('hidden');
   }
 }
