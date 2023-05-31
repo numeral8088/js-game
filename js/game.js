@@ -19,20 +19,22 @@ let dragY = 0;
 let dragMouseX = 0;
 let dragMouseY = 0;
 let isDragging = false;
-let showDebug = false;
 
 let gameState = 0;
 
 let startTime;
 let currentTime;
 
+const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+// colors of various game elements
 const colors = {
   'bg': 'hsl(0, 0%, 0%)',
   'bg2': 'hsl(220, 50%, 10%)',
   "line": 'hsl(220, 80%, 50%)',
   'border': 'hsl(220, 80%, 50%)',
   "closedDoor": 'hsl(350, 80%, 50%)',
-  "openDoor": 'hsla(350, 80%, 50%, 0.5)',
+  "openDoor": 'hsla(350, 80%, 50%, 0.25)',
   "plate": 'hsla(147, 100%, 35%, 0.5)',
   "platePressed": 'hsl(147, 100%, 35%)',
   'finish': 'hsla(350, 80%, 60%, 0.75)',
@@ -80,7 +82,7 @@ function draw() {
     if (gameState == 1) {
       obj.applyForce(gravity);
       // run collision checks on all level lines
-      runCollisionChecks();
+      runCollisionChecks(obj);
       obj.update();
     }
     // draw objects
@@ -96,7 +98,13 @@ function draw() {
 
 }
 
-function runCollisionChecks() {
+function runCollisionChecks(obj) {
+  for (b of levelObjects) {
+    if (!(obj == b)) {
+      obj.collideBall(b);
+    }
+  }
+
   for (l of levelLines) {
     let type = l.constructor.name;
     switch (type) {

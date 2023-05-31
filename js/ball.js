@@ -13,10 +13,24 @@ class Ball {
 
   // draw ball on canvas
   draw() {
-    fill(this.color);
     strokeWeight(0);
-    // circle(this.pos.x, this.pos.y, this.radius * 2);
+    // only draw motion blur on desktop devices
+    if (!isMobile) this.motionBlur();
+    fill(this.color);
     square(this.pos.x - this.radius, this.pos.y - this.radius, this.radius * 2);
+  }
+
+  motionBlur() {
+    let inverseVel = this.vel.copy().mult(-4);
+    let motion;
+    let col = color(this.color);
+    col.setAlpha(32);
+    fill(col);
+    for (let i = 0; i < 10; i++) {
+      motion = p5.Vector.add(inverseVel, this.pos);
+      inverseVel.mult(0.8);
+      square(motion.x - this.radius, motion.y - this.radius, this.radius * 2);
+    }
   }
 
   update() {
@@ -33,6 +47,15 @@ class Ball {
     friction.mult(-1);
     friction.setMag(0.03 * this.mass);
     this.applyForce(friction);
+  }
+
+  collideBall(b) {
+    let newPos = p5.Vector.add(this.pos, this.vel);
+    let newPos2 = p5.Vector.add(b.pos, b.vel);
+    if (newPos.dist(newPos2) < this.radius * 2) {
+      let repel = p5.Vector.sub(newPos2, newPos);
+      this.vel.add(p5.Vector.mult(repel, -0.02));
+    }
   }
 
   collideHPlane(y, d) {
