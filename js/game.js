@@ -291,6 +291,12 @@ function levelFinish() {
   gameState = 0;
   dialogLevelText.textContent = level;
   dialogTimerText.textContent = formatTimer(Math.round((currentTime - startTime) / 1000));
+  // if there are no more levels, then hide the next level button
+  if (levelData[level + 1] == null) {
+    nextLevelButton.style.display = 'none';
+  } else {
+    nextLevelButton.style.display = 'inline-block';
+  }
   dialog.showModal();
 }
 
