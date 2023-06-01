@@ -52,9 +52,10 @@ class Ball {
   collideBall(b) {
     let newPos = p5.Vector.add(this.pos, this.vel);
     let newPos2 = p5.Vector.add(b.pos, b.vel);
-    if (newPos.dist(newPos2) < this.radius * 2) {
+    if (newPos.dist(newPos2) < this.radius + b.radius) {
       let repel = p5.Vector.sub(newPos2, newPos);
-      this.vel.add(p5.Vector.mult(repel, -0.02));
+      repel.setMag(repel.mag() - (this.radius + b.radius));
+      this.vel.add(p5.Vector.mult(repel, .45));
     }
   }
 
